@@ -3,8 +3,14 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\HasOneThrough;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Backup extends Resource
@@ -32,6 +38,8 @@ class Backup extends Resource
         'name',
     ];
 
+    public static $displayInNavigation = false;
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -40,8 +48,25 @@ class Backup extends Resource
      */
     public function fields(NovaRequest $request)
     {
+
+
         return [
             BelongsTo::make("Device"),
+            File::make("Backup", "path_to_s3")
+                ->disk('local'),
+            Code::make("Backup Contents", function ()
+            {
+                return Storage::get($this->path_to_s3);
+            }),
+            DateTime::make("Created At"),
+            Text::make("Group", function ()
+            {
+                return $this->group->name;
+            })->sortable(true),
+
+
+            // ->path($this->path_to_s3)
+
         ];
     }
 

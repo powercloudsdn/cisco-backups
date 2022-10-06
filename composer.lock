@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9677093df69e1cc8dc78d8e15205977e",
+    "content-hash": "5293aa38e014a128487b9986c83dc18d",
     "packages": [
         {
             "name": "brick/math",
@@ -2654,6 +2654,60 @@
             "time": "2022-09-04T07:30:47+00:00"
         },
         {
+            "name": "nova-kit/nova-packages-tool",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nova-kit/nova-packages-tool.git",
+                "reference": "1af44e3422e6a885f51d8d2cad7a9234bc3ca088"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nova-kit/nova-packages-tool/zipball/1af44e3422e6a885f51d8d2cad7a9234bc3ca088",
+                "reference": "1af44e3422e6a885f51d8d2cad7a9234bc3ca088",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": ">=4.15.0 <4.16.0",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.24 || ^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.4.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "NovaKit\\NovaPackagesTool\\LaravelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NovaKit\\NovaPackagesTool\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mior Muhammad Zaki",
+                    "email": "crynobone@gmail.com"
+                }
+            ],
+            "description": "Tool for Laravel Nova Packages Development",
+            "support": {
+                "issues": "https://github.com/nova-kit/nova-packages-tool/issues",
+                "source": "https://github.com/nova-kit/nova-packages-tool/tree/v1.4.0"
+            },
+            "time": "2022-09-21T00:26:00+00:00"
+        },
+        {
             "name": "nunomaduro/termwind",
             "version": "v1.14.0",
             "source": {
@@ -2827,6 +2881,123 @@
                 }
             ],
             "time": "2022-03-31T06:15:15+00:00"
+        },
+        {
+            "name": "outl1ne/nova-multiselect-field",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-multiselect-field.git",
+                "reference": "640259ecf63249d640f40e0cb44caa64d88aee1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-multiselect-field/zipball/640259ecf63249d640f40e0cb44caa64d88aee1d",
+                "reference": "640259ecf63249d640f40e0cb44caa64d88aee1d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.1",
+                "nova-kit/nova-packages-tool": "^1.0.1",
+                "outl1ne/nova-translations-loader": "^5.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outl1ne\\MultiselectField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\MultiselectField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tarvo Reinpalu",
+                    "email": "tarvoreinpalu@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Optimist Digital",
+                    "email": "info@optimistdigital.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A multiple select field for Laravel Nova.",
+            "keywords": [
+                "laravel",
+                "multiselect",
+                "nova",
+                "select"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-multiselect-field/issues",
+                "source": "https://github.com/outl1ne/nova-multiselect-field/tree/4.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/outl1ne",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-10-05T09:58:07+00:00"
+        },
+        {
+            "name": "outl1ne/nova-translations-loader",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-translations-loader.git",
+                "reference": "a005e37d105473b0cfc4a1586d87bfc7d45ffcba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-translations-loader/zipball/a005e37d105473b0cfc4a1586d87bfc7d45ffcba",
+                "reference": "a005e37d105473b0cfc4a1586d87bfc7d45ffcba",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^8.0|^9.0",
+                "laravel/nova": "^4.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaTranslationsLoader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This Laravel Nova package helps developers load translations into their packages.",
+            "keywords": [
+                "laravel",
+                "nova",
+                "optimistdigital",
+                "outl1ne",
+                "translations"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-translations-loader/issues",
+                "source": "https://github.com/outl1ne/nova-translations-loader/tree/5.0.0"
+            },
+            "time": "2022-04-29T14:58:51+00:00"
         },
         {
             "name": "phpoption/phpoption",

@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->index();
             $table->string("username");
             $table->string("password");
+            $table->string("enable_password");
             $table->string("ip_address");
             $table->string("name");
-            $table->foreignId("group_id");
+            $table->foreignId("group_id")->index();
+            $table->foreignId("backup_script_id")->index();
             $table->timestamps();
         });
     }

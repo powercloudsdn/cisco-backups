@@ -15,7 +15,6 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-            new Help,
         ];
     }
 }

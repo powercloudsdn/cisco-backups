@@ -19,4 +19,9 @@ class Backup extends Model
     {
         return $this->belongsTo(Device::class);
     }
+
+    public function group()
+    {
+        return $this->hasOneThrough(Group::class, Device::class, "id", "id", "device_id", "group_id");
+    }
 }

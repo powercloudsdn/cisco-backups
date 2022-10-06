@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('backups', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
             $table->foreignId("device_id");
             $table->string("path_to_s3");
             $table->timestamps();

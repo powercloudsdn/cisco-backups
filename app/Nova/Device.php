@@ -8,6 +8,8 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\HasMany;
 
 class Device extends Resource
 {
@@ -45,9 +47,16 @@ class Device extends Resource
         return [
             Text::make("Name")->rules('required'),
             Text::make("Username")->hideFromIndex()->rules('required'),
-            Text::make("Password")->hideFromIndex()->rules('required'),
+            Text::make("Password")->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
+            Text::make("Enable Password")->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
             Text::make("Ip Address")->hideFromIndex()->rules('required', 'ip'),
             BelongsTo::make("Group")->sortable(),
+            BelongsTo::make("Backup Script", "backup_script")->rules('required'),
+            HasMany::make("Backups")
         ];
     }
 

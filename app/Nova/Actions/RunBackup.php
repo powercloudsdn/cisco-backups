@@ -25,7 +25,6 @@ class RunBackup extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model ) {
-
             BackupCreate::dispatch($model);
         }
     }
