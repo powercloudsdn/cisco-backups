@@ -12,7 +12,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\Blade;
+use App\Models\BackupLog;
+use Exception;
 use Illuminate\Support\Facades\Blade as FacadesBlade;
+use Illuminate\Support\Str;
 
 class BackupCreate implements ShouldQueue
 {
@@ -38,7 +41,7 @@ class BackupCreate implements ShouldQueue
         $device = $this->device;
 
         $device_uuid = $device->uuid;
-        $ftp_ip = config('app.app_ip');
+        $ftp_ip = config('tftp.ip');
 
         $filename = $device_uuid . "-" . time();
 
@@ -60,43 +63,22 @@ class BackupCreate implements ShouldQueue
         $php = FacadesBlade::compileString($device_command);
         $script = Blade::render($php, $variables);
 
-        $tmpfname = "/home/keegan/Documents/cisco-backups/backup";//tempnam(sys_get_temp_dir(), "");
+        $file_name = Str::uuid();
 
-        //rename($tmpfname, $tmpfname .= '.bash');
+        Storage::disk("cisco_backups")->put($file_name, $script);
 
-        $handle = fopen($tmpfname, "w");
-        fwrite($handle, $script);
-        fclose($handle);
-        // chmod($tmpfname, 755);
+        $file_url = Storage::path($file_name);
 
-        passthru("expect $tmpfname", $output);
+        exec("expect $file_url", $output);
 
-        dd($output);
-
-        sleep(2);
-
-        $dir = "tftp/$filename";
-
-        if (!file_exists($dir)) {
-            $this->release();
-            return;
-        }
-
-        $file_contents = file_get_contents($dir);
-
-        $backup_file = Backup::where(["device_id" => $device->id])->latest()->first();
-
-        $newest_backup_file = Storage::disk('local')->get($backup_file->path_to_s3);
-
-        if (sha1($file_contents) === sha1($newest_backup_file)) {
-            return;
-        }
-
-        Storage::disk('local')->put("$filename", $file_contents);
-
-        Backup::create([
+        $backup = BackupLog::create([
+            "log" => implode("\n", $output),
             "device_id" => $device->id,
-            "path_to_s3" => $filename
+            "status" => "Pending",
         ]);
+
+        Storage::disk("cisco_backups")->delete($file_name);
+
+        SyncBackupToStorage::dispatch($device, $backup, $filename)->delay(now()->addSeconds(10));
     }
 }

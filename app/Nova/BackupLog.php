@@ -2,30 +2,30 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\RunBackup;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Validation\Rules;
-use Laravel\Nova\Fields\HasMany;
 
-class Device extends Resource
+class BackupLog extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Device::class;
+    public static $model = \App\Models\BackupLog::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -33,8 +33,10 @@ class Device extends Resource
      * @var array
      */
     public static $search = [
-        'name',
+        'id',
     ];
+
+    public static $displayInNavigation = false;
 
     /**
      * Get the fields displayed by the resource.
@@ -45,19 +47,18 @@ class Device extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make("Name")->rules('required'),
-            Text::make("Username")->hideFromIndex()->rules('required'),
-            Text::make("Password")->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
-            Text::make("Enable Password")->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
-            Text::make("Ip Address")->hideFromIndex()->rules('required', 'ip'),
-            BelongsTo::make("Group")->sortable(),
-            BelongsTo::make("Backup Script", "backup_script")->rules('required'),
-            HasMany::make("Backups"),
-            HasMany::make("Backup Log", "backup_log"),
+            ID::make()->sortable(),
+            Text::make("Log", function ()
+            {
+                return str($this->log)->limit(50);
+            })->hideFromDetail(),
+            Code::make("Log"),
+            Badge::make("Status")->map([
+                "Pending" => "info",
+                "Failed" => "danger",
+                "Success" => "success",
+            ]),
+            Date::make("Created At"),
         ];
     }
 
@@ -102,8 +103,26 @@ class Device extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            new RunBackup()
-        ];
+        return [];
+    }
+
+    public static function authorizedToCreate(Request $request)
+    {
+        return false;
+    }
+
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
+    }
+
+    public function authorizedToDelete(Request $request)
+    {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request)
+    {
+        return false;
     }
 }

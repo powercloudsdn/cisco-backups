@@ -5,17 +5,15 @@ namespace App\Console\Commands;
 use App\Jobs\BackupCreate;
 use App\Models\Device;
 use Illuminate\Console\Command;
-use App\Helpers\Blade;
-use Illuminate\Support\Facades\Blade as FacadesBlade;
 
-class Test extends Command
+class BackupDevices extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 't';
+    protected $signature = 'backup:devices';
 
     /**
      * The console command description.
@@ -31,9 +29,11 @@ class Test extends Command
      */
     public function handle()
     {
-        $device  = Device::first();
+        $devices  = Device::get();
 
-        BackupCreate::dispatch($device);
+        foreach ($devices as $device) {
+            BackupCreate::dispatch($device);
+        }
 
         return Command::SUCCESS;
     }

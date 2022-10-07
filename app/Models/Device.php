@@ -40,4 +40,9 @@ class Device extends Model
     {
         return $this->hasMany(Backup::class);
     }
+
+    public function backup_log()
+    {
+        return $this->hasMany(BackupLog::class);
+    }
 }
